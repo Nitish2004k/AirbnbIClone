@@ -1,0 +1,105 @@
+<% layout("/layouts/boilerplate") %> <%= success %>
+<!-- <h3>All Listings</h3> -->
+<style>
+    #filters {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .filter{
+        text-align: center;
+        margin-right: 2rem;
+        margin-top: 2rem;
+        opacity: 0.7;
+    }
+    .filter:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+    .filter p {
+        font-size: 0.8rem;
+    }
+</style>
+
+<div id="filters">
+    <div class="filter">
+       <div> <i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+    </div>
+    <div class="filter">
+       <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+    </div>
+     <div class="filter">
+       <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
+    </div>
+     <div class="filter">
+       <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+    </div>
+     <div class="filter">
+       <div><i class="fa-solid fa-chess-rook"></i></div>
+        <p>Castles</p>
+    </div>
+     <div class="filter">
+       <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+    </div>
+    <div class="filter">
+       <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+    </div>
+    <div class="filter">
+       <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+    </div>
+    <div class="filter">
+       <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+    </div>
+    <div class="filter">
+       <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <% for(let listing of allListings) { %> 
+        
+        <div class="col-md-4 mb-4">
+            <a href="/listings/<%= listing._id %>" 
+               class="text-decoration-none text-dark">
+
+                <div class="card h-100 listing-card">
+
+                    <img src="<%= listing.image.url %>" 
+                         class="card-img-top" 
+                         alt="listing_image" 
+                         style="height: 20rem; object-fit: cover;">
+                         <!-- <div class="card-img-overlay">Nitish</div> -->
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <b><%= listing.title %></b>
+                        </h5>
+
+                        <p class="card-text">
+                            ₹ <%= listing.price %> <br>
+                            <%= listing.location %>
+                        </p>
+
+                        <span class="btn btn-primary">
+                            View Details
+                        </span>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+    <% } %>
+</div>

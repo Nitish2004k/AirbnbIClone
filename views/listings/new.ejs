@@ -1,0 +1,174 @@
+<% layout("/layouts/boilerplate") %>
+
+<h3>Create a new listing</h3>
+<hr>
+
+<form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input name="listing[title]" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image Link</label>
+        <input name="listing[image]" placeholder="enter image URL/Link" type="text" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Upload Image </label>
+        <input name="listing[image]"  type="file" class="form-control"/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input type="number" name="listing[price]" placeholder="enter price" class="form-control" step="0.01" min="0" required/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Location</label>
+        <input type="text" name="listing[location]" placeholder="enter location" class="form-control" required/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Country</label>
+        <input type="text" name="listing[country]" placeholder="enter country" class="form-control" required/>
+    </div>
+
+    <button class="btn btn-dark">Add</button>
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wanderlust</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container"> -->
+  
+<!-- 
+<h3>Create a new listing</h3>
+<hr>
+
+<form method="POST" action="/listings" nonvalidate class="needs-validation">
+
+<div class="mb-3">
+<label class="form-label">Title</label>
+<input name="listing[title]" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Description</label>
+<textarea name="listing[description]" class="form-control"></textarea>
+</div>
+
+ <div class="mb-3">
+        <label for="image" class="form-label">Image Link</label>
+        <input  name="listing[image]" placeholder="enter image URL/Link" type="text" class="form-control"/>
+       </div>
+
+       <div class="row">
+        <label for="price" class="form-label">Price</label>
+         <input type="number" name="listing[price]" placeholder="enter price" class="form-control" step="0.01" min="0" required />
+        
+       </div>
+
+        <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+         <input type="text" name="listing[location]" placeholder="enter location" class="form-control" required />
+        
+       </div>
+
+        <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+         <input type="text" name="listing[country]" placeholder="enter country" class="form-control" required />
+        
+        
+       </div>
+
+<button class="btn btn-dark">Add</button>
+
+</form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script> --> -->
+
+<!-- </body> -->
+<!-- </html> -->
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wanderlust</title>
+
+</head>
+<body>
+    <h3>Create a new listing</h3>
+    <hr>
+    <br>
+    <form method="POST" action="/listings" nonvalidate class="needs-validation">
+        <div class="mb-3">
+             <label for="title" class="form-label">Title</label>
+             <input  name="listing[title]" placeholder="enter title" type="text" class="form-control"required />
+             <div class="valid-feedback">Title looks good!</div>
+        </div>
+       <div>
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" placeholder="enter description" class="form-control" required></textarea>
+       </div>
+
+       <div class="mb-3">
+        <label for="image" class="form-label">Image Link</label>
+        <input  name="listing[image]" placeholder="enter image URL/Link" type="text" class="form-control"/>
+       </div>
+
+       <div class="row">
+        <label for="price" class="form-label">Price</label>
+         <input type="number" name="listing[price]" placeholder="enter price" class="form-control" step="0.01" min="0" required />
+        
+       </div>
+
+        <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+         <input type="text" name="listing[location]" placeholder="enter location" class="form-control" required />
+        
+       </div>
+
+        <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+         <input type="text" name="listing[country]" placeholder="enter country" class="form-control" required />
+        
+        
+       </div>
+   
+    <button class="btn btn-dark">Add</button>
+    </form>
+    
+</body>
+</html> -->
