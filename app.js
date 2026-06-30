@@ -108,20 +108,22 @@ app.use("/listings/:id/reviews", reviews);
 // This route belongs in routes/review.js only — having it in both
 // caused double-save bugs. Keep it only in your reviews router.
 
-// Review validator (export this to schema.js or middleware if reused)
+
+
+// Review validator
 const validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(400, errMsg); // ✅ Fix 4: was 404, should be 400 for validation
+        throw new ExpressError(errMsg, 400);   // ✅ message pehle, statusCode baad mein
     } else {
         next();
     }
 };
 
-// ✅ Fix 5: 404 handler for unmatched routes (use named wildcard for Express v5 / path-to-regexp v8+)
+// 404 handler for unmatched routes
 app.all("/{*any}", (req, res, next) => {
-    next(new ExpressError(404, "Page Not Found"));
+    next(new ExpressError("Page Not Found", 404));   // ✅ message pehle, statusCode baad mein
 });
 
 // Global error handler
@@ -133,6 +135,35 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log("Server is listening on port 8080");
 });
+
+
+
+
+// // Review validator (export this to schema.js or middleware if reused)
+// const validateReview = (req, res, next) => {
+//     let { error } = reviewSchema.validate(req.body);
+//     if (error) {
+//         let errMsg = error.details.map((el) => el.message).join(",");
+//         throw new ExpressError(400, errMsg); // ✅ Fix 4: was 404, should be 400 for validation
+//     } else {
+//         next();
+//     }
+// };
+
+// // ✅ Fix 5: 404 handler for unmatched routes (use named wildcard for Express v5 / path-to-regexp v8+)
+// app.all("/{*any}", (req, res, next) => {
+//     next(new ExpressError(404, "Page Not Found"));
+// });
+
+// // Global error handler
+// app.use((err, req, res, next) => {
+//     let { statusCode = 500, message = "Something went wrong" } = err;
+//     res.status(statusCode).render("error.ejs", { err });
+// });
+
+// app.listen(8080, () => {
+//     console.log("Server is listening on port 8080");
+// });
 
 
 
