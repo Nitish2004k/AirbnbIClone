@@ -1,14 +1,4 @@
 require('dotenv').config();
-// Purana - ye hatao
-// if (process.env.NODE_ENV != "production") {
-//     require('dotenv').config();
-// }
-
-// Naya - ye lagao (sabse upar)
-
-// if (process.env.NODE_ENV != "production") {
-//     require('dotenv').config();
-// }
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -33,11 +23,10 @@ const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const user = require('./routes/user.js');
 
-// ✅ Fix 1: use dbUrl (not bare ATLASDB_URL) inside mongoose.connect
 const dbUrl = process.env.ATLASDB_URL;
 
 async function main() {
-    await mongoose.connect(dbUrl); // ✅ was: mongoose.connect(ATLASDB_URL) — ReferenceError
+    await mongoose.connect(dbUrl);
 }
 
 main()
@@ -52,7 +41,6 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-
 const store = MongoStore.create({
     mongoUrl: process.env.ATLASDB_URL,
     crypto: {
@@ -61,12 +49,10 @@ const store = MongoStore.create({
     touchAfter: 24 * 3600,
 });
 
-
-store.on("error", () => {
+store.on("error", (err) => {
     console.log("ERROR in MONGO SESSION STORE", err);
 });
 
-// ✅ Fix 2: session secret moved to env variable (never hardcode secrets)
 const sessionOptions = {
     store,
     secret: process.env.SECRET || 'fallback_dev_secret',
@@ -78,8 +64,6 @@ const sessionOptions = {
         httpOnly: true,
     },
 };
-
-
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -100,22 +84,20 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 app.use("/", user);
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
-
-// ✅ Fix 3: removed duplicate POST /listings/:id/reviews here
-// This route belongs in routes/review.js only — having it in both
-// caused double-save bugs. Keep it only in your reviews router.
-
-
 
 // Review validator
 const validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(errMsg, 400);   // ✅ message pehle, statusCode baad mein
+        throw new ExpressError(errMsg, 400);
     } else {
         next();
     }
@@ -123,7 +105,7 @@ const validateReview = (req, res, next) => {
 
 // 404 handler for unmatched routes
 app.all("/{*any}", (req, res, next) => {
-    next(new ExpressError("Page Not Found", 404));   // ✅ message pehle, statusCode baad mein
+    next(new ExpressError("Page Not Found", 404));
 });
 
 // Global error handler
@@ -135,6 +117,150 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log("Server is listening on port 8080");
 });
+
+
+
+
+// require('dotenv').config();
+// // Purana - ye hatao
+// // if (process.env.NODE_ENV != "production") {
+// //     require('dotenv').config();
+// // }
+
+// // Naya - ye lagao (sabse upar)
+
+// // if (process.env.NODE_ENV != "production") {
+// //     require('dotenv').config();
+// // }
+
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const app = express();
+// const path = require("path");
+// const methodOverride = require("method-override");
+// const ejsMate = require("ejs-mate");
+// const wrapAsync = require("./utils/wrapAsync");
+// const ExpressError = require("./utils/expressError");
+// const { reviewSchema } = require("./schema");
+// const Review = require("./model/reviews.js");
+// const Listing = require("./model/listing");
+// const User = require('./model/user');
+
+// const session = require('express-session');
+// const { MongoStore } = require('connect-mongo');
+// const flash = require('connect-flash');
+// const LocalStrategy = require('passport-local');
+// const passport = require("passport");
+
+// const listings = require("./routes/listing.js");
+// const reviews = require("./routes/review.js");
+// const user = require('./routes/user.js');
+
+// // ✅ Fix 1: use dbUrl (not bare ATLASDB_URL) inside mongoose.connect
+// const dbUrl = process.env.ATLASDB_URL;
+
+// async function main() {
+//     await mongoose.connect(dbUrl); // ✅ was: mongoose.connect(ATLASDB_URL) — ReferenceError
+// }
+
+// main()
+//     .then(() => console.log("Connected to DB"))
+//     .catch((err) => console.log(err));
+
+// // App config
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "views"));
+// app.use(express.urlencoded({ extended: true }));
+// app.use(methodOverride("_method"));
+// app.engine('ejs', ejsMate);
+// app.use(express.static(path.join(__dirname, "/public")));
+
+
+// const store = MongoStore.create({
+//     mongoUrl: process.env.ATLASDB_URL,
+//     crypto: {
+//         secret: process.env.SECRET,
+//     },
+//     touchAfter: 24 * 3600,
+// });
+
+
+// store.on("error", () => {
+//     console.log("ERROR in MONGO SESSION STORE", err);
+// });
+
+// // ✅ Fix 2: session secret moved to env variable (never hardcode secrets)
+// const sessionOptions = {
+//     store,
+//     secret: process.env.SECRET || 'fallback_dev_secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+//         maxAge: 7 * 24 * 60 * 60 * 1000,
+//         httpOnly: true,
+//     },
+// };
+
+
+
+// app.use(session(sessionOptions));
+// app.use(flash());
+
+// // Passport
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+// // Locals middleware
+// app.use((req, res, next) => {
+//     res.locals.success = req.flash("success");
+//     res.locals.error = req.flash("error");
+//     res.locals.currUser = req.user;
+//     next();
+// });
+
+// // Routes
+// app.use("/", user);
+// app.get("/", (req, res) => {
+//     res.redirect("/listings");
+// });
+// app.use("/listings", listings);
+// app.use("/listings/:id/reviews", reviews);
+
+// // ✅ Fix 3: removed duplicate POST /listings/:id/reviews here
+// // This route belongs in routes/review.js only — having it in both
+// // caused double-save bugs. Keep it only in your reviews router.
+
+
+
+// // Review validator
+// const validateReview = (req, res, next) => {
+//     let { error } = reviewSchema.validate(req.body);
+//     if (error) {
+//         let errMsg = error.details.map((el) => el.message).join(",");
+//         throw new ExpressError(errMsg, 400);   // ✅ message pehle, statusCode baad mein
+//     } else {
+//         next();
+//     }
+// };
+
+// // 404 handler for unmatched routes
+// app.all("/{*any}", (req, res, next) => {
+//     next(new ExpressError("Page Not Found", 404));   // ✅ message pehle, statusCode baad mein
+// });
+
+// // Global error handler
+// app.use((err, req, res, next) => {
+//     let { statusCode = 500, message = "Something went wrong" } = err;
+//     res.status(statusCode).render("error.ejs", { err });
+// });
+
+// app.listen(8080, () => {
+//     console.log("Server is listening on port 8080");
+// });
 
 
 
