@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
-const passportLocalMongoose = require("passport-local-mongoose");
+const passportLocalMongooseModule = require("passport-local-mongoose");
+const passportLocalMongoose =
+    typeof passportLocalMongooseModule === "function"
+        ? passportLocalMongooseModule
+        : passportLocalMongooseModule.default;
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -11,9 +15,6 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose); // adds username, hash, salt, register(), authenticate()
 
 module.exports = mongoose.model("User", userSchema);
-
-
-
 
 // const mongoose = require("mongoose");
 // const passportLocalMongoose = require("passport-local-mongoose").default;
